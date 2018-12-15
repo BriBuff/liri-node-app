@@ -5,33 +5,42 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var axios = require("axios");
 var fs = require("fs");
+var moment = require("moment");
+var Spotify = require('node-spotify-api');
+var spotify = new Spotify (keys.spotify);
   
 // * You should then be able to access your keys information like so
 
-  ```js
-  var spotify = new Spotify(keys.spotify);
-  ```
+  // ```js
+  // var spotify = new Spotify(keys.spotify);
+  // ```
   // Store the search variables
   var search = process.argv[2];
   var term = process.argv.splice(3).join(" ");
 
-  if (!search) {
-    search = "movie";
+  // if (!search) {
+  //   search = "movie";
+  // }
+
+  // if (!term) {
+  //   term = "Mr.Nobody"
+  // }
+
+  // Do What It Says
+  var IwantThis = function() {
+    fs.readFile("./random.txt", "utf8", (err, data) => {
+      if (err) throw err;
+      var output = data.split(",");
+      if(output.length === 2) {
+        searches(output[0], output[1]);
+      } else{
+        searhes(output[0]);
+      }
+      // searches();
+    });
   }
 
-  if (!term) {
-    term = "Mr.Nobody"
-  }
 
-  // If/Else statement to run the correct API function to search
-  if (search === "concert-this") {
-    concertThis();
-  } else if (search === "spotify-this-song") {
-    spotifyThis();
-  } else if (search === "movie-this") {
-    movieThis();
-  } else {
-    console.log("Please use a correct search term.")};
 
 // 9. Make it so liri.js can take in one of the following commands:
 
@@ -49,6 +58,7 @@ var fs = require("fs");
         ].join("\n\n");
 
    });
+  }
 
 //    * This will search the Bands in Town Artist Events API (`"https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"`) for an artist and render the following information about each event to the terminal:
 
@@ -61,25 +71,23 @@ var fs = require("fs");
   //  * `spotify-this-song`
 
   //  `node liri.js spotify-this-song '<song name here>'`
-  var Spotify = require('node-spotify-api');
-   var spotifyThis =
-      spotify
-      .search({ type: 'track', query: 'All the Small Things' })
+   var spotifyThis = function(ter) {
+      console.log(ter);
+      if (ter === "") {
+        ter = "The Sign + Ace of Base"
+      }
+    spotify.search({ type: 'track', query: ter })
       .then(function(response) {
-        console.log(response);
+        var resp = response.tracks.items[0]
+        console.log("Artist: " , resp.album.artists[0].name);
+        console.log("Album Name: " , resp.album.name);
+        console.log("Preview URL: " , resp.preview_url);
+        console.log("Song Title: " , resp.name);
       })
       .catch(function(err) {
         console.log(err);
       });
-
-  //     spotify
-  // .request('https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx')
-  // .then(function(data) {
-  //   console.log(data); 
-  // })
-  // .catch(function(err) {
-  //   console.error('Error occurred: ' + err); 
-  // });
+    }
 
 
 //    * This will show the following information about the song in your terminal/bash window
@@ -146,3 +154,22 @@ var fs = require("fs");
 //      * It should run `spotify-this-song` for "I Want it That Way," as follows the text in `random.txt`.
 
 //      * Edit the text in random.txt to test out the feature for movie-this and concert-this.
+
+
+ // If/Else statement to run the correct API function to search
+ function searches (sea, ter) {
+  
+ if (sea === "concert-this") {
+  concertThis(ter);
+} else if (sea === "spotify-this-song") {
+  spotifyThis(ter);
+} else if (sea === "movie-this") {
+  movieThis(ter);
+} else if(sea === "do-what-it-says") {
+  IwantThis();
+} else {
+  console.log("Please use a correct search term.")
+};
+}
+
+searches(search, term);
