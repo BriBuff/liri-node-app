@@ -17,11 +17,10 @@ var spotify = new Spotify (keys.spotify);
       if (err) throw err;
       var output = data.split(",");
       if(output.length === 2) {
-        searches(output[0], output[1]);
+        searches(output[0], output[1].replace(/"/g,""));
       } else{
         searhes(output[0]);
       }
-      // searches();
     });
   }
 
@@ -38,7 +37,7 @@ var spotify = new Spotify (keys.spotify);
           // Name of the venue
           console.log("Venue Name: " + jsonInfo.venue.name);
           // Venue location
-          console.log("Venue Location: " + jsonInfo.venue.country + ", " + jsonInfo.venue.city);
+          console.log("Venue Location (Country, City): " + jsonInfo.venue.country + ", " + jsonInfo.venue.city);
           // Date of the Event (use moment to format this as "MM/DD/YYYY")
           console.log("Date of Event: " + moment(jsonInfo.datetime).format("MM/DD/YYYY"));
    });
@@ -107,6 +106,8 @@ var spotify = new Spotify (keys.spotify);
 
  // If/Else statement to run the correct API function to search
  function searches (sea, ter) {
+
+  console.log(ter);
   
  if (sea === "concert-this") {
   concertThis(ter);
