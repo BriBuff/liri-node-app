@@ -1,7 +1,5 @@
+// Packages
 require("dotenv").config();
-
-// Add the code required to import the `keys.js` file and store it in a variable.
-
 var keys = require("./keys.js");
 var axios = require("axios");
 var fs = require("fs");
@@ -47,15 +45,13 @@ var spotify = new Spotify (keys.spotify);
   }
 
   //  * `spotify-this-song`
-
   //  `node liri.js spotify-this-song '<song name here>'`
    var spotifyThis = function(ter) {
-      console.log(ter);
+      //If no song is provided then your program will default to "The Sign" by Ace of Base.
       if (ter === "") {
         ter = "The Sign + Ace of Base";
       }
     spotify.search({ type: 'track', query: ter })
-    //If no song is provided then your program will default to "The Sign" by Ace of Base.
       .then(function(response) {
         var resp = response.tracks.items[0]
         // Artist Name
