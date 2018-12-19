@@ -9,22 +9,9 @@ var moment = require("moment");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify (keys.spotify);
   
-// * You should then be able to access your keys information like so
-
-  // ```js
-  // var spotify = new Spotify(keys.spotify);
-  // ```
   // Store the search variables
   var search = process.argv[2];
   var term = process.argv.splice(3).join(" ");
-
-  // if (!search) {
-  //   search = "movie";
-  // }
-
-  // if (!term) {
-  //   term = "Mr.Nobody"
-  // }
 
   // Do What It Says
   var IwantThis = function() {
@@ -41,32 +28,23 @@ var spotify = new Spotify (keys.spotify);
   }
 
 
-
-// 9. Make it so liri.js can take in one of the following commands:
-
   //  * `concert-this`
   //  `node liri.js concert-this <artist/band name here>`
 
    var concertThis = function(artist) {
      var urlConcert = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
-     axios.get().then(function(response){
+     axios.get(urlConcert).then(function(response){
       var jsonInfo = response.data[0];
-      var movieInfo = [
-          "Artist/Band Name: " + jsonInfo.name,
-          "Vanue Location: " + jsonInfo.genres,
-          "Date of Event: " + jsonInfo.rating.average
-        ].join("\n\n");
-
+          // Name of Artist
+          console.log("Artist/Band Name: " + jsonInfo.lineup[0]);
+          // Name of the venue
+          console.log("Venue Name: " + jsonInfo.venue.name);
+          // Venue location
+          console.log("Venue Location: " + jsonInfo.venue.country + ", " + jsonInfo.venue.city);
+          // Date of the Event (use moment to format this as "MM/DD/YYYY")
+          console.log("Date of Event: " + moment(jsonInfo.datetime).format("MM/DD/YYYY"));
    });
   }
-
-//    * This will search the Bands in Town Artist Events API (`"https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp"`) for an artist and render the following information about each event to the terminal:
-
-//      * Name of the venue
-
-//      * Venue location
-
-//      * Date of the Event (use moment to format this as "MM/DD/YYYY")
 
   //  * `spotify-this-song`
 
@@ -74,84 +52,59 @@ var spotify = new Spotify (keys.spotify);
    var spotifyThis = function(ter) {
       console.log(ter);
       if (ter === "") {
-        ter = "The Sign + Ace of Base"
+        ter = "The Sign + Ace of Base";
       }
     spotify.search({ type: 'track', query: ter })
+    //If no song is provided then your program will default to "The Sign" by Ace of Base.
       .then(function(response) {
         var resp = response.tracks.items[0]
+        // Artist Name
         console.log("Artist: " , resp.album.artists[0].name);
-        console.log("Album Name: " , resp.album.name);
-        console.log("Preview URL: " , resp.preview_url);
+        // Song Name
         console.log("Song Title: " , resp.name);
+        // Preview Link
+        console.log("Preview URL: " , resp.preview_url);
+        // Album Name
+        console.log("Album Name: " , resp.album.name);
       })
       .catch(function(err) {
         console.log(err);
       });
     }
 
+  // `movie-this`
 
-//    * This will show the following information about the song in your terminal/bash window
-
-//      * Artist(s)
-
-//      * The song's name
-
-//      * A preview link of the song from Spotify
-
-//      * The album that the song is from
-// * If no song is provided then your program will default to "The Sign" by Ace of Base.
-
-// * Step Four: On the next screen, scroll down to where you see your client id and client secret. Copy these values down somewhere, you'll need them to use the Spotify API and the [node-spotify-api package](https://www.npmjs.com/package/node-spotify-api).
-
-  //  * `movie-this`
-
-   var movieThis = function(movie) {
-     var movieURL = "http://www.omdbapi.com/?i=tt3896198&apikey=eb179323" + movie;
-    axios.get().then(function(response){
-      var jsonInfo = response.data[0];
-      var movieInfo = [
-          "Movie: " + jsonInfo.title,
-          "Release Year: " + jsonInfo.released,
-          "Rating: " +jsonInfo.rated,
-          "IMDB Rating: " + jsonInfo.rating.imdbRating,
-          "Rotten Tomatoes Rating: " + jsonInfo.rating[1].value,
-          "Country of Origin: " + jsonInfo.network.country,
-          "Plot: " + jsonInfo.plot,
-          "Featured Actors: " + jsonInfo.actors
-        ].join("\n\n");
+   var movieThis = function(ter) {
+    // If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
+    if(ter === "") {
+      ter = "Mr. Nobody";
+    }
+    
+     var movieURL = "http://www.omdbapi.com/?t=" + ter + "&apikey=eb179323&t";
+     
+    axios.get(movieURL).then(function(response){
+      var jsonin = response.data;
+          // Title of the movie.
+          console.log("Movie: " + jsonin.Title);
+          // Year the movie came out.
+          console.log("Release Year: " + jsonin.Year);
+          // Rating
+          console.log("Rating: " +jsonin.Rated);
+          // IMDB Rating of the movie.
+          console.log("IMDB Rating: " + jsonin.imdbRating);
+          // Rotten Tomatoes Rating of the movie.
+          console.log("Rotten Tomatoes Rating: " + jsonin.Ratings[1].Value);
+          // Country where the movie was produced.
+          console.log("Country of Origin: " + jsonin.Country);
+          // Language of the movie.
+          console.log("Language: " + jsonin.Language);
+          // Plot of the movie.
+          console.log("Plot: " + jsonin.Plot);
+          // Actors in the movie.
+          console.log("Featured Actors: " + jsonin.Actors);
     })
 
    };
-
-//    API Key: http://www.omdbapi.com/?i=tt3896198&apikey=eb179323 (eb179323)
-
-//    * This will output the following information to your terminal/bash window:
-
-//      ```
-//        * Title of the movie.
-//        * Year the movie came out.
-//        * IMDB Rating of the movie.
-//        * Rotten Tomatoes Rating of the movie.
-//        * Country where the movie was produced.
-//        * Language of the movie.
-//        * Plot of the movie.
-//        * Actors in the movie.
-//      ```
-
-//    * If the user doesn't type a movie in, the program will output data for the movie 'Mr. Nobody.'
-
-//      * If you haven't watched "Mr. Nobody," then you should: <http://www.imdb.com/title/tt0485947/>
-
-//      * It's on Netflix!
-
-//    * You'll use the `axios` package to retrieve data from the OMDB API. Like all of the in-class activities, the OMDB API requires an API key. You may use `trilogy`.
-
-
-  //  * `do-what-it-says`
-
-//    * Using the `fs` Node package, LIRI will take the text inside of random.txt and then use it to call one of LIRI's commands.
-
-//      * It should run `spotify-this-song` for "I Want it That Way," as follows the text in `random.txt`.
 
 //      * Edit the text in random.txt to test out the feature for movie-this and concert-this.
 
