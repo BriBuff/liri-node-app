@@ -18,6 +18,7 @@ var spotify = new Spotify (keys.spotify);
       var output = data.split(",");
       if(output.length === 2) {
         searches(output[0], output[1].replace(/"/g,""));
+        console.log(output[0], output[1]);
       } else{
         searhes(output[0]);
       }
@@ -28,8 +29,8 @@ var spotify = new Spotify (keys.spotify);
   //  * `concert-this`
   //  `node liri.js concert-this <artist/band name here>`
 
-   var concertThis = function(artist) {
-     var urlConcert = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+   var concertThis = function(ter) {
+     var urlConcert = "https://rest.bandsintown.com/artists/" + ter + "/events?app_id=codingbootcamp";
      axios.get(urlConcert).then(function(response){
       var jsonInfo = response.data[0];
           // Name of Artist
