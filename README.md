@@ -1,7 +1,7 @@
 # liri-node-app
 
 
-Functions:
+#Functions:
 
 concert-this: Looks up concerts for a currently touring band/artist (name of venue, location, and date).
 
@@ -15,6 +15,9 @@ If you do not use the correct search term, you will be told to pick a correct se
 
 Video of the Liri Bot: https://drive.google.com/file/d/1qdWVKp0vy07NjDIa2CWFs2peULcouqHA/view
 
-Code Used: Node.js
-APIs Used: Spotify, Bandsintown, IMDB
-Packages Needed: FS, Moment, Spotify, Axios, Keys, Dotenv
+#Code Used: 
+    Node.js
+#APIs Used: 
+    Spotify, Bandsintown, IMDB
+#Packages Needed: 
+    FS, Moment, Spotify, Axios, Keys, Dotenv
