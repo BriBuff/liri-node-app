@@ -13,7 +13,7 @@ do-what-it-says: Looks up the text that is in the random.txt file.
 
 If you do not use the correct search term, you will be told to pick a correct search term.
 
-Video of the Liri Bot: https://drive.google.com/file/d/1qdWVKp0vy07NjDIa2CWFs2peULcouqHA/view
+Video of the Liri Bot: https://drive.google.com/file/d/1xrL29x589eCAmcDWUZRKyYUmL3sxlw6W/view
 
 Code Used: 
     Node.js

@@ -31,7 +31,8 @@ var spotify = new Spotify (keys.spotify);
 
    var concertThis = function(ter) {
      var urlConcert = "https://rest.bandsintown.com/artists/" + ter + "/events?app_id=codingbootcamp";
-     axios.get(urlConcert).then(function(response){
+     console.log(urlConcert);
+     axios.get(encodeURI(urlConcert)).then(function(response){
       var jsonInfo = response.data[0];
           // Name of Artist
           console.log("Artist/Band Name: " + jsonInfo.lineup[0]);
