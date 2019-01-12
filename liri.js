@@ -15,7 +15,7 @@ var spotify = new Spotify (keys.spotify);
   var IwantThis = function() {
     fs.readFile("./random.txt", "utf8", (err, data) => {
       if (err) throw err;
-      var output = data.split(",");
+      var output = data.split(", ");
       if(output.length === 2) {
         searches(output[0], output[1].replace(/"/g,""));
         console.log(output[0], output[1]);
